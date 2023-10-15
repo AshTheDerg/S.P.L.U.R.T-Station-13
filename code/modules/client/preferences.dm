@@ -64,7 +64,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 	var/outline_color = COLOR_THEME_MIDNIGHT
 	var/screentip_pref = SCREENTIP_PREFERENCE_ENABLED
 	var/screentip_color = "#ffd391"
-	var/screentip_allow_images = FALSE
+	var/screentip_images = TRUE
 	var/buttons_locked = FALSE
 	var/hotkeys = FALSE
 
@@ -227,6 +227,13 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 "butt_visibility" = GEN_VISIBLE_NO_UNDIES,
 "belly_visibility" = GEN_VISIBLE_NO_UNDIES,
 "anus_visibility" = GEN_VISIBLE_NO_UNDIES,
+"breasts_accessible" = FALSE,
+"cock_accessible" = FALSE,
+"balls_accessible" = FALSE,
+"vag_accessible" = FALSE,
+"butt_accessible" = FALSE,
+"anus_accessible" = FALSE,
+"belly_accessible" = FALSE,
 "cock_stuffing" = FALSE,
 "balls_stuffing" = FALSE,
 "vag_stuffing" = FALSE,
@@ -466,6 +473,22 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<HR>"
 
 			dat += "<center>"
+			var/client_file = user.client.Import()
+			var/savefile_name
+			if(client_file)
+				var/savefile/cache_savefile = new(user.client.Import())
+				if(!cache_savefile["deleted"] || savefile_needs_update(cache_savefile) != -2)
+					cache_savefile["real_name"] >> savefile_name
+			dat += "Local storage: [savefile_name ? savefile_name : "Empty"]"
+			dat += "<br />"
+			dat += "<a href='?_src_=prefs;preference=export_slot'>Export current slot</a>"
+			dat += "<a [savefile_name ? "href='?_src_=prefs;preference=import_slot' style='white-space:normal;'" : "class='linkOff'"]>Import into current slot</a>"
+			dat += "<a href='?_src_=prefs;preference=delete_local_copy' style='white-space:normal;background:#eb2e2e;'>Delete locally saved character</a>"
+			dat += "</center>"
+
+			dat += "<HR>"
+
+			dat += "<center>"
 			dat += "<a href='?_src_=prefs;preference=character_tab;tab=[GENERAL_CHAR_TAB]' [character_settings_tab == GENERAL_CHAR_TAB ? "class='linkOn'" : ""]>General</a>"
 			dat += "<a href='?_src_=prefs;preference=character_tab;tab=[APPEARANCE_CHAR_TAB]' [character_settings_tab == APPEARANCE_CHAR_TAB ? "class='linkOn'" : ""]>Appearance</a>"
 			dat += "<a href='?_src_=prefs;preference=character_tab;tab=[MARKINGS_CHAR_TAB]' [character_settings_tab == MARKINGS_CHAR_TAB ? "class='linkOn'" : ""]>Markings</a>"
@@ -478,11 +501,14 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 			dat += "<center>"
 			dat += "<table width='100%'>"
 			dat += "<tr>"
-			dat += "<td width=35%>"
-			dat += "Preview:"
+			dat += "<td width=35% style=\"line-height:10px\">"
+			dat += "<center><b>Preview:</b></center><br>"
+			dat += "<center>"
 			dat += "<a href='?_src_=prefs;preference=character_preview;tab=[PREVIEW_PREF_JOB]' [preview_pref == PREVIEW_PREF_JOB ? "class='linkOn'" : ""]>[PREVIEW_PREF_JOB]</a>"
 			dat += "<a href='?_src_=prefs;preference=character_preview;tab=[PREVIEW_PREF_LOADOUT]' [preview_pref == PREVIEW_PREF_LOADOUT ? "class='linkOn'" : ""]>[PREVIEW_PREF_LOADOUT]</a>"
 			dat += "<a href='?_src_=prefs;preference=character_preview;tab=[PREVIEW_PREF_NAKED]' [preview_pref == PREVIEW_PREF_NAKED ? "class='linkOn'" : ""]>[PREVIEW_PREF_NAKED]</a>"
+			dat += "<a href='?_src_=prefs;preference=character_preview;tab=[PREVIEW_PREF_NAKED_AROUSED]' [preview_pref == PREVIEW_PREF_NAKED_AROUSED ? "class='linkOn'" : ""]>[PREVIEW_PREF_NAKED_AROUSED]</a>"
+			dat += "</center>"
 			dat += "</td>"
 			if(character_settings_tab == LOADOUT_CHAR_TAB) //if loadout
 				//calculate your gear points from the chosen item
@@ -498,16 +524,19 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 				else
 					chosen_gear = list()
 
-				dat += "<td width=65%>"
-				dat += "<b><font color='[gear_points == 0 ? "#E62100" : "#CCDDFF"]'>[gear_points]</font> loadout point[gear_points == 1 ? "" : "s"] remaining <a href='?_src_=prefs;preference=gear;clear_loadout=1'>Clear Loadout</a></b>"
+				dat += "<td width=65% style=\"line-height:10px\">"
+				dat += "<center><b><font color='[gear_points == 0 ? "#E62100" : "#CCDDFF"]'>[gear_points]</font> loadout point[gear_points == 1 ? "" : "s"] remaining</center><br>"
+				dat += "<center><a href='?_src_=prefs;preference=gear;clear_loadout=1'>Clear Loadout</a></b></center>"
 				dat += "</td>"
 			else
-				dat += "<td width=35%>"
-				dat += "<b>Mismatched parts:</b> <a href='?_src_=prefs;preference=mismatched_markings;task=input'>[(show_mismatched_markings) ? "Enabled" : "Disabled"]</a>"
+				dat += "<td width=35% style=\"line-height:10px\">"
+				dat += "<center><b>Mismatched parts:</b></center><br>"
+				dat += "<center><a href='?_src_=prefs;preference=mismatched_markings;task=input'>[(show_mismatched_markings) ? "Enabled" : "Disabled"]</a></center>"
 				dat += "</td>"
 
-				dat += "<td width=30%>"
-				dat += "<b> Advanced colors:</b> <a href='?_src_=prefs;preference=color_scheme;task=input'>[(features["color_scheme"] == ADVANCED_CHARACTER_COLORING) ? "Enabled" : "Disabled"]</a>"
+				dat += "<td width=30% style=\"line-height:10px\">"
+				dat += "<center><b>Advanced colors:</b></center><br>"
+				dat += "<center><a href='?_src_=prefs;preference=color_scheme;task=input'>[(features["color_scheme"] == ADVANCED_CHARACTER_COLORING) ? "Enabled" : "Disabled"]</a></center>"
 				dat += "</td>"
 
 			dat += "</tr>"
@@ -611,6 +640,25 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += 	"Vore : <a href='?_src_=prefs;preference=vore_pref'>[vorepref]</a><br>"
 					//END OF SKYRAT EDIT
 
+					dat += "<h2>Clothing & Equipment</h2>"
+					/* skyrat change
+					dat += "<b>Underwear:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=underwear;task=input'>[underwear]</a>"
+					if(GLOB.underwear_list[underwear]?.has_color)
+						dat += "<b>Underwear Color:</b> <span style='border:1px solid #161616; background-color: #[undie_color];'><font color='[color_hex2num(undie_color) < 200 ? "FFFFFF" : "000000"]'>#[undie_color]</font></span> <a href='?_src_=prefs;preference=undie_color;task=input'>Change</a><BR>"
+					dat += "<b>Undershirt:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=undershirt;task=input'>[undershirt]</a>"
+					if(GLOB.undershirt_list[undershirt]?.has_color)
+						dat += "<b>Undershirt Color:</b> <span style='border:1px solid #161616; background-color: #[shirt_color];'><font color='[color_hex2num(shirt_color) < 200 ? "FFFFFF" : "000000"]'>#[shirt_color]</font></span> <a href='?_src_=prefs;preference=shirt_color;task=input'>Change</a><BR>"
+					dat += "<b>Socks:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=socks;task=input'>[socks]</a>"
+					if(GLOB.socks_list[socks]?.has_color)
+						dat += "<b>Socks Color:</b> <span style='border:1px solid #161616; background-color: #[socks_color];'><font color='[color_hex2num(socks_color) < 200 ? "FFFFFF" : "000000"]'>#[socks_color]</font></span> <a href='?_src_=prefs;preference=socks_color;task=input'>Change</a><BR>"
+					*/
+					dat += "<b>Backpack:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=bag;task=input'>[backbag]</a>"
+					dat += "<b>Jumpsuit:</b><BR><a href ='?_src_=prefs;preference=suit;task=input'>[jumpsuit_style]</a><BR>"
+					if((HAS_FLESH in pref_species.species_traits) || (HAS_BONE in pref_species.species_traits))
+						dat += "<BR><b>Temporal Scarring:</b><BR><a href='?_src_=prefs;preference=persistent_scars'>[(persistent_scars) ? "Enabled" : "Disabled"]</A>"
+						dat += "<a href='?_src_=prefs;preference=clear_scars'>Clear scar slots</A><BR>"
+					dat += "<b>Uplink Location:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=uplink_loc;task=input'>[uplink_spawn_loc]</a>"
+
 					dat += APPEARANCE_CATEGORY_COLUMN //body moves right sandstorm change
 
 					dat += "<h2>Body</h2>"
@@ -659,6 +707,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						mutant_colors = TRUE
 
 						dat += "<b>Sprite Size:</b> <a href='?_src_=prefs;preference=body_size;task=input'>[features["body_size"]*100]%</a><br>"
+						dat += "<b>Scaled Appearance:</b> <a href='?_src_=prefs;preference=toggle_fuzzy;task=input'>[fuzzy ? "Fuzzy" : "Sharp"]</a><br>"
 
 					if(!(NOEYES in pref_species.species_traits))
 						dat += "<h3>Eye Type</h3>"
@@ -781,29 +830,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "</tr></table>"
 
 					dat += "</td>"
-					dat += "<table><tr><td width='340px' height='300px' valign='top'>"
-					dat += "<h2>Clothing & Equipment</h2>"
-					/* skyrat change
-					dat += "<b>Underwear:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=underwear;task=input'>[underwear]</a>"
-					if(GLOB.underwear_list[underwear]?.has_color)
-						dat += "<b>Underwear Color:</b> <span style='border:1px solid #161616; background-color: #[undie_color];'><font color='[color_hex2num(undie_color) < 200 ? "FFFFFF" : "000000"]'>#[undie_color]</font></span> <a href='?_src_=prefs;preference=undie_color;task=input'>Change</a><BR>"
-					dat += "<b>Undershirt:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=undershirt;task=input'>[undershirt]</a>"
-					if(GLOB.undershirt_list[undershirt]?.has_color)
-						dat += "<b>Undershirt Color:</b> <span style='border:1px solid #161616; background-color: #[shirt_color];'><font color='[color_hex2num(shirt_color) < 200 ? "FFFFFF" : "000000"]'>#[shirt_color]</font></span> <a href='?_src_=prefs;preference=shirt_color;task=input'>Change</a><BR>"
-					dat += "<b>Socks:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=socks;task=input'>[socks]</a>"
-					if(GLOB.socks_list[socks]?.has_color)
-						dat += "<b>Socks Color:</b> <span style='border:1px solid #161616; background-color: #[socks_color];'><font color='[color_hex2num(socks_color) < 200 ? "FFFFFF" : "000000"]'>#[socks_color]</font></span> <a href='?_src_=prefs;preference=socks_color;task=input'>Change</a><BR>"
-					*/
-					dat += "<b>Backpack:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=bag;task=input'>[backbag]</a>"
-					dat += "<b>Jumpsuit:</b><BR><a href ='?_src_=prefs;preference=suit;task=input'>[jumpsuit_style]</a><BR>"
-					if((HAS_FLESH in pref_species.species_traits) || (HAS_BONE in pref_species.species_traits))
-						dat += "<BR><b>Temporal Scarring:</b><BR><a href='?_src_=prefs;preference=persistent_scars'>[(persistent_scars) ? "Enabled" : "Disabled"]</A>"
-						dat += "<a href='?_src_=prefs;preference=clear_scars'>Clear scar slots</A><BR>"
-					dat += "<b>Uplink Location:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=uplink_loc;task=input'>[uplink_spawn_loc]</a>"
-					dat += "</td>"
 
-					dat += "<td width='220px' height='300px' valign='top'>"
-					dat += "<h3>Lewd preferences</h3>"
+					dat += "<table><tr><td height='300px' valign='top'>"
+					dat += "<h2>Lewd preferences</h2>"
 					dat += "<b>Lust tolerance:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=lust_tolerance;task=input'>[lust_tolerance]</a>"
 					dat += "<b>Sexual potency:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=sexual_potency;task=input'>[sexual_potency]</a>"
 					dat += "</td>"
@@ -821,7 +850,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						dat += "<b>Egg shell:</b><a style='display:block;width:100px' href ='?_src_=prefs;preference=egg_shell;task=input'>[egg_shell]</a>"
 					dat += "</td>"
 					//SPLURT EDIT END
-					dat += APPEARANCE_CATEGORY_COLUMN
+					dat += "<td height='300px' valign='top'>"
 					if(NOGENITALS in pref_species.species_traits)
 						dat += "<b>Your species ([pref_species.name]) does not support genitals!</b><br>"
 					else
@@ -850,6 +879,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							dat += "<b>Diameter Ratio:</b> <a style='display:block;width:120px' href='?_src_=prefs;preference=cock_diameter_ratio;task=input'>[features["cock_diameter_ratio"]]</a>" //SPLURT Edit
 							dat += "<b>Penis Visibility:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=cock_visibility;task=input'>[features["cock_visibility"]]</a>"
 							dat += "<b>Egg Stuffing:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=cock_stuffing'>[features["cock_stuffing"] == TRUE ? "Yes" : "No"]</a>" //SPLURT Edit
+							dat += "<b>Penis Always Accessible:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=cock_accessible'>[features["cock_accessible"] ? "Yes" : "No"]</a>"
 							dat += "<b>Has Testicles:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=has_balls'>[features["has_balls"] == TRUE ? "Yes" : "No"]</a>"
 							if(features["has_balls"])
 								if(pref_species.use_skintones && features["genitals_use_skintone"] == TRUE)
@@ -872,7 +902,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 									dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=balls_fluid;task=input'>Nothing?</a>"
 								//SPLURT Edit end
 						dat += "</td>"
-						dat += APPEARANCE_CATEGORY_COLUMN
+						dat += "<b>Testicles Always Accessible:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=balls_accessible'>[features["balls_accessible"] ? "Yes" : "No"]</a>"
+						dat += "<td height='300px' valign='top'>"
 						dat += "<h3>Vagina</h3>"
 						dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=has_vag'>[features["has_vag"] == TRUE ? "Yes" : "No"]</a>"
 						if(features["has_vag"])
@@ -885,6 +916,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 								dat += "<span style='border: 1px solid #161616; background-color: #[features["vag_color"]];'><font color='[color_hex2num(features["vag_color"]) < 200 ? "FFFFFF" : "000000"]'>#[features["vag_color"]]</font></span> <a href='?_src_=prefs;preference=vag_color;task=input'>Change</a><br>"
 							dat += "<b>Vagina Visibility:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=vag_visibility;task=input'>[features["vag_visibility"]]</a>"
 							dat += "<b>Egg Stuffing:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=vag_stuffing'>[features["vag_stuffing"] == TRUE ? "Yes" : "No"]</a>" //SPLURT Edit
+							dat += "<b>Vagina Always Accessible:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=vag_accessible'>[features["vag_accessible"] ? "Yes" : "No"]</a>"
 							dat += "<b>Has Womb:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=has_womb'>[features["has_womb"] == TRUE ? "Yes" : "No"]</a>"
 							//SPLURT Edit
 							if(features["has_womb"] == TRUE)
@@ -896,7 +928,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 									dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=womb_fluid;task=input'>Nothing?</a>"
 							//SPLURT Edit end
 						dat += "</td>"
-						dat += APPEARANCE_CATEGORY_COLUMN
+						dat += "<td height='300px' valign='top'>"
 						dat += "<h3>Breasts</h3>"
 						dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=has_breasts'>[features["has_breasts"] == TRUE ? "Yes" : "No"]</a>"
 						if(features["has_breasts"])
@@ -909,6 +941,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							dat += "<b>Cup Size:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=breasts_size;task=input'>[features["breasts_size"]]</a>"
 							dat += "<b>Breasts Shape:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=breasts_shape;task=input'>[features["breasts_shape"]]</a>"
 							dat += "<b>Breasts Visibility:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=breasts_visibility;task=input'>[features["breasts_visibility"]]</a>"
+							dat += "<b>Breasts Always Accessible:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=breasts_accessible'>[features["breasts_accessible"] ? "Yes" : "No"]</a>"
 							dat += "<b>Lactates:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=breasts_producing'>[features["breasts_producing"] == TRUE ? "Yes" : "No"]</a>"
 							//SPLURT Edit
 							dat += "<b>Egg Stuffing:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=breasts_stuffing'>[features["breasts_stuffing"] == TRUE ? "Yes" : "No"]</a>"
@@ -923,7 +956,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 									dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=breasts_fluid;task=input'>Nothing?</a>"
 							//SPLURT Edit end
 						dat += "</td>"
-						dat += APPEARANCE_CATEGORY_COLUMN
+						dat += "<td height='300px' valign='top'>"
 						dat += "<h3>Butt</h3>"
 						dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=has_butt'>[features["has_butt"] == TRUE ? "Yes" : "No"]</a>"
 						if(features["has_butt"])
@@ -950,8 +983,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 								dat += "<b>Butthole Visibility:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=anus_visibility;task=input'>[features["anus_visibility"]]</a>"
 								dat += "<b>Egg Stuffing:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=anus_stuffing'>[features["anus_stuffing"] == TRUE ? "Yes" : "No"]</a>"
 
+							dat += "<b>Butt Always Accessible:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=butt_accessible'>[features["butt_accessible"] ? "Yes" : "No"]</a>"
+						dat += "<h3>Anus</h3>"
+						dat += "<b>Anus Always Accessible:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=anus_accessible'>[features["anus_accessible"] ? "Yes" : "No"]</a>"
 						dat += "</td>"
-						dat += APPEARANCE_CATEGORY_COLUMN
+						dat += "<td height='300px' valign='top'>"
 						dat += "<h3>Belly</h3>"
 						dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=has_belly'>[features["has_belly"] == TRUE ? "Yes" : "No"]</a>"
 						if(features["has_belly"])
@@ -966,10 +1002,10 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							dat += "<b>Min Size:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=belly_min_size;task=input'>[features["belly_min_size"] ? features["belly_min_size"] : "Disabled" ]</a>"
 							dat += "<b>Belly Visibility:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=belly_visibility;task=input'>[features["belly_visibility"]]</a>"
 							dat += "<b>Egg Stuffing:</b><a style='display:block;width:50px' href='?_src_=prefs;preference=belly_stuffing'>[features["belly_stuffing"] == TRUE ? "Yes" : "No"]</a>"
+							dat += "<b>Belly Always Accessible:</b><a style='display:block;width:100px' href='?_src_=prefs;preference=belly_accessible'>[features["belly_accessible"] ? "Yes" : "No"]</a>"
 						dat += "</td>"
 						if(all_quirks.Find("Dullahan"))
 							dat += APPEARANCE_CATEGORY_COLUMN
-
 							dat += "<h3>Neckfire</h3>"
 							dat += "<a style='display:block;width:50px' href='?_src_=prefs;preference=has_neckfire;task=input'>[features["neckfire"] ? "Yes" : "No"]</a>"
 							if(features["neckfire"])
@@ -1278,7 +1314,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "<b>Screentip Color:</b> <span style='border:1px solid #161616; background-color: [screentip_color];'><font color='[color_hex2num(screentip_color) < 200 ? "FFFFFF" : "000000"]'>[screentip_color]</font></span> <a href='?_src_=prefs;preference=screentip_color'>Change</a><BR>"
 					dat += "<font style='border-bottom:2px dotted white; cursor:help;'\
 						title=\"This is an accessibility preference, if disabled, fallbacks to only text which colorblind people can understand better\">\
-						<b>Screentip context with images:</b></font> <a href='?_src_=prefs;preference=screentip_allow_images'>[screentip_allow_images ? "Allowed" : "Disallowed"]</a><br>"
+						<b>Screentip context with images:</b></font> <a href='?_src_=prefs;preference=screentip_images'>[screentip_images ? "Allowed" : "Disallowed"]</a><br>"
 					dat += "<b>tgui Monitors:</b> <a href='?_src_=prefs;preference=tgui_lock'>[(tgui_lock) ? "Primary" : "All"]</a><br>"
 					dat += "<b>tgui Style:</b> <a href='?_src_=prefs;preference=tgui_fancy'>[(tgui_fancy) ? "Fancy" : "No Frills"]</a><br>"
 					dat += "<b>Show Runechat Chat Bubbles:</b> <a href='?_src_=prefs;preference=chat_on_map'>[chat_on_map ? "Enabled" : "Disabled"]</a><br>"
@@ -1521,8 +1557,11 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					dat += "<b>Chastity Interactions :</b> <a href='?_src_=prefs;preference=chastitypref'>[(cit_toggles & CHASTITY) ? "Allowed" : "Disallowed"]</a><br>"
 					dat += "<b>Genital Stimulation Modifiers :</b> <a href='?_src_=prefs;preference=stimulationpref'>[(cit_toggles & STIMULATION) ? "Allowed" : "Disallowed"]</a><br>"
 					dat += "<b>Edging :</b> <a href='?_src_=prefs;preference=edgingpref'>[(cit_toggles & EDGING) ? "Allowed" : "Disallowed"]</a><br>"
+					dat += "<b>Receive Cum Covering :</b> <a href='?_src_=prefs;preference=cumontopref'>[(cit_toggles & CUM_ONTO) ? "Allowed" : "Disallowed"]</a><br>"
 					dat += "<span style='border-radius: 2px;border:1px dotted white;cursor:help;' title='Enables verbs involving farts, shit and piss.'>?</span> "
 					dat += "<b>Unholy ERP verbs :</b> <a href='?_src_=prefs;preference=unholypref'>[unholypref]</a><br>" //https://www.youtube.com/watch?v=OHKARc-GObU
+					dat += "<span style='border-radius: 2px;border:1px dotted white;cursor:help;' title='Enables macro / micro stepping and stomping interactions.'>?</span> "
+					dat += "<b>Stomping Interactions :</b> <a href='?_src_=prefs;preference=stomppref'>[stomppref ? "Yes" : "No"]</a><br>"
 					//END OF SPLURT EDIT
 					//SKYRAT EDIT
 					dat += "<span style='border-radius: 2px;border:1px dotted white;cursor:help;' title='Enables verbs involving ear/brain fucking.'>?</span> " //SPLURT Edit (wow! editception???)
@@ -2829,7 +2868,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						features["cock_diameter_ratio"] = clamp(round(new_ratio, 0.01), min_diameter_ratio, max_diameter_ratio)
 
 				if("cock_visibility")
-					var/n_vis = input(user, "Penis Visibility", "Character Preference") as null|anything in CONFIG_GET(keyed_list/safe_visibility_toggles)
+					var/n_vis = input(user, "Penis Visibility", "Character Preference") as null|anything in CONFIG_GET(str_list/safe_visibility_toggles)
 					if(n_vis)
 						features["cock_visibility"] = n_vis
 
@@ -2851,7 +2890,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						features["balls_shape"] = new_shape
 
 				if("balls_visibility")
-					var/n_vis = input(user, "Testicles Visibility", "Character Preference") as null|anything in CONFIG_GET(keyed_list/safe_visibility_toggles)
+					var/n_vis = input(user, "Testicles Visibility", "Character Preference") as null|anything in CONFIG_GET(str_list/safe_visibility_toggles)
 					if(n_vis)
 						features["balls_visibility"] = n_vis
 
@@ -2888,7 +2927,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							to_chat(user,"<span class='danger'>Invalid color. Your color is not bright enough.</span>")
 
 				if("breasts_visibility")
-					var/n_vis = input(user, "Breasts Visibility", "Character Preference") as null|anything in CONFIG_GET(keyed_list/safe_visibility_toggles)
+					var/n_vis = input(user, "Breasts Visibility", "Character Preference") as null|anything in CONFIG_GET(str_list/safe_visibility_toggles)
 					if(n_vis)
 						features["breasts_visibility"] = n_vis
 
@@ -2920,7 +2959,7 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							to_chat(user,"<span class='danger'>Invalid color. Your color is not bright enough.</span>")
 
 				if("vag_visibility")
-					var/n_vis = input(user, "Vagina Visibility", "Character Preference") as null|anything in CONFIG_GET(keyed_list/safe_visibility_toggles)
+					var/n_vis = input(user, "Vagina Visibility", "Character Preference") as null|anything in CONFIG_GET(str_list/safe_visibility_toggles)
 					if(n_vis)
 						features["vag_visibility"] = n_vis
 
@@ -2988,17 +3027,17 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						features["butt_size"] = clamp(round(new_length), min_B, max_B)
 
 				if("butt_visibility")
-					var/n_vis = input(user, "Butt Visibility", "Character Preference") as null|anything in CONFIG_GET(keyed_list/safe_visibility_toggles)
+					var/n_vis = input(user, "Butt Visibility", "Character Preference") as null|anything in CONFIG_GET(str_list/safe_visibility_toggles)
 					if(n_vis)
 						features["butt_visibility"] = n_vis
 
 				if("anus_visibility")
-					var/n_vis = input(user, "Butthole Visibility", "Character Preference") as null|anything in CONFIG_GET(keyed_list/safe_visibility_toggles)
+					var/n_vis = input(user, "Butthole Visibility", "Character Preference") as null|anything in CONFIG_GET(str_list/safe_visibility_toggles)
 					if(n_vis)
 						features["anus_visibility"] = n_vis
 
 				if("belly_visibility")
-					var/n_vis = input(user, "Belly Visibility", "Character Preference") as null|anything in CONFIG_GET(keyed_list/safe_visibility_toggles)
+					var/n_vis = input(user, "Belly Visibility", "Character Preference") as null|anything in CONFIG_GET(str_list/safe_visibility_toggles)
 					if(n_vis)
 						features["belly_visibility"] = n_vis
 
@@ -3200,6 +3239,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					if(new_body_size)
 						features["body_size"] = clamp(new_body_size * 0.01, CONFIG_GET(number/body_size_min), CONFIG_GET(number/body_size_max))
 
+				if("toggle_fuzzy")
+					fuzzy = !fuzzy
+
 				if("tongue")
 					var/selected_custom_tongue = input(user, "Choose your desired tongue (none means your species tongue)", "Character Preference") as null|anything in GLOB.roundstart_tongues
 					if(selected_custom_tongue)
@@ -3382,22 +3424,30 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					features["has_cock"] = !features["has_cock"]
 					if(features["has_cock"] == FALSE)
 						features["has_balls"] = FALSE
+				if("cock_accessible")
+					features["cock_accessible"] = !features["cock_accessible"]
 				if("has_belly")
 					features["has_belly"] = !features["has_belly"]
 					if(features["has_belly"] == FALSE)
 						features["belly_size"] = 1
 				if("has_balls")
 					features["has_balls"] = !features["has_balls"]
+				if("balls_accessible")
+					features["balls_accessible"] = !features["balls_accessible"]
 				if("has_breasts")
 					features["has_breasts"] = !features["has_breasts"]
 					if(features["has_breasts"] == FALSE)
 						features["breasts_producing"] = FALSE
 				if("breasts_producing")
 					features["breasts_producing"] = !features["breasts_producing"]
+				if("breasts_accessible")
+					features["breasts_accessible"] = !features["breasts_accessible"]
 				if("has_vag")
 					features["has_vag"] = !features["has_vag"]
 					if(features["has_vag"] == FALSE)
 						features["has_womb"] = FALSE
+				if("vag_accessible")
+					features["vag_accessible"] = !features["vag_accessible"]
 				if("has_womb")
 					features["has_womb"] = !features["has_womb"]
 				if("has_butt")
@@ -3406,6 +3456,12 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 						features["has_anus"] = FALSE
 				if("has_anus")
 					features["has_anus"] = !features["has_anus"]
+				if("butt_accessible")
+					features["butt_accessible"] = !features["butt_accessible"]
+				if("anus_accessible")
+					features["anus_accessible"] = !features["anus_accessible"]
+				if("belly_accessible")
+					features["belly_accessible"] = !features["belly_accessible"]
 				if("widescreenpref")
 					widescreenpref = !widescreenpref
 					user.client.view_size.setDefault(getScreenSize(widescreenpref))
@@ -3511,6 +3567,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 							unholypref = "No"
 						if("No")
 							unholypref = "Yes"
+				if("stomppref") // What the fuck is this?
+					stomppref = !stomppref
 				//Skyrat edit - *someone* offered me actual money for this shit
 				if("extremepref") //i hate myself for doing this
 					switch(extremepref) //why the fuck did this need to use cycling instead of input from a list
@@ -3654,8 +3712,8 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					var/pickedScreentipColor = input(user, "Choose your screentip color.", "General Preference", screentip_color) as color|null
 					if(pickedScreentipColor)
 						screentip_color = pickedScreentipColor
-				if("screentip_allow_images")
-					screentip_allow_images = !screentip_allow_images
+				if("screentip_images")
+					screentip_images = !screentip_images
 				if("tgui_lock")
 					tgui_lock = !tgui_lock
 				if("winflash")
@@ -3912,7 +3970,33 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 					cit_toggles ^= STIMULATION
 				if("edgingpref")
 					cit_toggles ^= EDGING
+				if("cumontopref")
+					cit_toggles ^= CUM_ONTO
 				//
+				if("export_slot")
+					var/savefile/S = save_character(export = TRUE)
+					if(istype(S, /savefile))
+						user.client.Export(S)
+						tgui_alert_async(user, "Successfully saved character slot")
+					else
+						tgui_alert_async(user, "Failed saving character slot")
+						return
+
+				if("import_slot")
+					var/savefile/S = new(user.client.Import())
+					if(istype(S, /savefile))
+						if(load_character(provided = S) == TRUE)
+							tgui_alert_async(user, "Successfully loaded character slot.")
+						else
+							tgui_alert_async(user, "Failed loading character slot")
+							return
+					else
+						tgui_alert_async(user, "Failed loading character slot")
+						return
+
+				if("delete_local_copy")
+					user.client.clear_export()
+					tgui_alert_async(user, "Local save data erased.")
 
 	if(href_list["preference"] == "gear")
 		if(href_list["clear_loadout"])
@@ -4099,6 +4183,9 @@ GLOBAL_LIST_EMPTY(preferences_datums)
 
 	character.dna.features["lust_tolerance"] = lust_tolerance
 	character.dna.features["sexual_potency"] = sexual_potency
+
+	if(features["anus_accessible"])
+		character.toggle_anus_always_accessible(TRUE)
 
 	character.give_genitals(TRUE) //character.update_genitals() is already called on genital.update_appearance()
 
