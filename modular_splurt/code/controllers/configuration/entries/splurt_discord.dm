@@ -1,13 +1,13 @@
 /datum/config_entry/string/discordbotcommandprefix
-	default = "?"
+	config_entry_value = "?"
 
 /datum/config_entry/string/chat_new_game_notifications
-	default = null
+	config_entry_value = null
 
 /datum/config_entry/string/verification_channel
 
 /datum/config_entry/string/verification_command
-	default = "verify"
+	config_entry_value = "verify"
 
 /datum/config_entry/flag/forced_discord_stay
 

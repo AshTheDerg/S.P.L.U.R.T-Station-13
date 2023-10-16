@@ -270,11 +270,6 @@
 	active_style = new /datum/gauntlet_style/brawler
 	active_style.on_apply(src)
 
-/obj/item/kinetic_crusher/glaive/gauntlets/Destroy()
-	QDEL_NULL(active_style)
-	current_target = null
-	return ..()
-
 /obj/item/kinetic_crusher/glaive/gauntlets/examine(mob/living/user)
 	. = ..()
 	. += "According to a very small display, the currently loaded style is \"[active_style.name]\"."

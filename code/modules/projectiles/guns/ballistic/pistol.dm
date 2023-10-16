@@ -49,9 +49,9 @@
 /obj/item/gun/ballistic/automatic/pistol/modular/update_overlays()
 	. = ..()
 	if(magazine && suppressed)
-		. += "[current_skin ? unique_reskin[current_skin]["icon_state"] : initial(icon_state)]-magazine-sup"	//Yes, this means the default iconstate can't have a magazine overlay
+		. += "[unique_reskin[current_skin]["icon_state"]]-magazine-sup"	//Yes, this means the default iconstate can't have a magazine overlay
 	else if (magazine)
-		. += "[current_skin ? unique_reskin[current_skin]["icon_state"] : initial(icon_state)]-magazine"
+		. += "[unique_reskin[current_skin]["icon_state"]]-magazine"
 
 /obj/item/gun/ballistic/automatic/pistol/m1911
 	name = "\improper M1911"

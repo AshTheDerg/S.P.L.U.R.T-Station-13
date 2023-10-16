@@ -49,10 +49,6 @@
 	w_class = WEIGHT_CLASS_BULKY
 	weapon_weight = WEAPON_HEAVY
 	sawn_desc = "A cheap hunting rifle that bubba got ahold of."
-	can_bayonet = TRUE
-	bayonet_diagonal = TRUE
-	knife_x_offset = 25
-	knife_y_offset = 26
 
 /obj/item/gun/ballistic/shotgun/huntingrifle/attackby(obj/item/A, mob/user, params)
 	..()
@@ -123,9 +119,7 @@
 	desc = "The rapid response combat shotgun is the perfect answer for the old dilema 'how many people can you kill in a corridor using a single burst', ps. shells are cosmetic only."
 	icon = 'modular_splurt/icons/obj/guns/vhariik.dmi'
 	icon_state = "eshotgunr"
-	item_state = "eshotgr"
-	lefthand_file = 'modular_splurt/icons/mob/inhands/weapons/guns_lefthand.dmi'
-	righthand_file = 'modular_splurt/icons/mob/inhands/weapons/guns_righthand.dmi'
+	item_state = "shotgun"
 	fire_delay = 2
 	burst_size = 3
 	w_class = WEIGHT_CLASS_NORMAL
@@ -138,9 +132,7 @@
 	desc = "Look, the 'energy' part was just to boost sales, but it looks hella cool doesn't?."
 	icon = 'modular_splurt/icons/obj/guns/vhariik.dmi'
 	icon_state = "eshotgun"
-	item_state = "eshotg"
-	lefthand_file = 'modular_splurt/icons/mob/inhands/weapons/guns_lefthand.dmi'
-	righthand_file = 'modular_splurt/icons/mob/inhands/weapons/guns_righthand.dmi'
+	item_state = "shotgun"
 	fire_delay = 3
 	mag_type = /obj/item/ammo_box/magazine/internal/shot/eshotty
 	w_class = WEIGHT_CLASS_NORMAL

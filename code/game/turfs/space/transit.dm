@@ -92,11 +92,9 @@
 			_y = min
 
 	var/turf/T = locate(_x, _y, _z)
-
-	if(!QDELETED(AM))
-		AM.forceMove(T)
-		var/turf/throwturf = get_ranged_target_turf(T, dir, 1)
-		AM.safe_throw_at(throwturf, 1, 4, null, FALSE)
+	AM.forceMove(T)
+	var/turf/throwturf = get_ranged_target_turf(T, dir, 1)
+	AM.safe_throw_at(throwturf, 1, 4, null, FALSE)
 
 
 /turf/open/space/transit/CanBuildHere()

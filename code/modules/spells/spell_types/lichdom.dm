@@ -46,7 +46,7 @@
 
 		playsound(user, 'sound/effects/pope_entry.ogg', 100)
 
-		if(!do_after(M, 5 SECONDS, marked_item, timed_action_flags = (IGNORE_USER_LOC_CHANGE|IGNORE_HELD_ITEM)))
+		if(!do_after(M, 50, needhand=FALSE, target=marked_item))
 			to_chat(M, "<span class='warning'>Your soul snaps back to your body as you stop ensouling [marked_item]!</span>")
 			return
 
@@ -87,9 +87,6 @@
 
 /obj/item/phylactery/Initialize(mapload, datum/mind/newmind)
 	. = ..()
-	if(!newmind)
-		stack_trace("A phylactery was created with no target mind")
-		return INITIALIZE_HINT_QDEL
 	mind = newmind
 	name = "phylactery of [mind.name]"
 

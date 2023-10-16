@@ -50,23 +50,43 @@
 
 /datum/quirk/rad_fiend
 	name = "Rad Fiend"
-	desc = "You've been blessed by Cherenkov's warming light, causing you to emit a subtle glow at all times. Only -very- intense radiation is capable of penetrating your protective barrier."
+	desc = "You've been blessed by Cherenkov's warming light, causing you to emit a subtle glow at all times. Only intense radiation is capable of penetrating your protective barrier."
 	value = 2
 	mob_trait = TRAIT_RAD_FIEND
 	gain_text = span_notice("You feel empowered by Cherenkov's glow.")
 	lose_text = span_notice("You realize that rads aren't so rad.")
 
+	// Variable for the radiation immunity check
+	var/can_gain = TRUE
+
 /datum/quirk/rad_fiend/add()
 	// Define quirk holder mob
 	var/mob/living/carbon/human/quirk_mob = quirk_holder
+
+	// Check for any radiation immunity
+	if(HAS_TRAIT(quirk_mob, TRAIT_RADIMMUNE))
+		// Set gain status
+		can_gain = FALSE
+
+		// Return without doing anything
+		return
+
 	// Add glow control action
 	var/datum/action/rad_fiend/update_glow/quirk_action = new
 	quirk_action.Grant(quirk_mob)
 
+/datum/quirk/rad_fiend/post_add()
+	// Check if quirk effect was gained
+	if(can_gain)
+		return
+
+	// Alert quirk holder of gain status
+	to_chat(quirk_holder, span_warning("As you are immune to radiation, you were unable to gain Cherenkov's blessing. Please discuss alternatives with a medical professional."))
+
 /datum/quirk/rad_fiend/remove()
 	// Define quirk holder mob
 	var/mob/living/carbon/human/quirk_mob = quirk_holder
-
+	
 	// Remove glow control action
 	var/datum/action/rad_fiend/update_glow/quirk_action = locate() in quirk_mob.actions
 	quirk_action.Remove(quirk_mob)
@@ -103,9 +123,9 @@
 	examine_list += span_lewd("\nYou can't make eye contact with [quirk_holder.p_them()] before flustering away!")
 	if(!TIMER_COOLDOWN_CHECK(user, COOLDOWN_DOMINANT_EXAMINE))
 		to_chat(quirk_holder, span_notice("\The [user] tries to look at you but immediately turns away with a red face..."))
-		TIMER_COOLDOWN_START(user, COOLDOWN_DOMINANT_EXAMINE, 10 SECONDS)
-		sub.dir = turn(get_dir(sub, quirk_holder), pick(-90, 90))
-		sub.emote("blush")
+		TIMER_COOLDOWN_START(user, COOLDOWN_DOMINANT_EXAMINE, 5 SECONDS)
+	sub.dir = turn(get_dir(sub, quirk_holder), pick(-90, 90))
+	sub.emote("blush")
 
 /datum/quirk/dominant_aura/proc/handle_snap(datum/source, list/emote_args)
 	SIGNAL_HANDLER
@@ -191,67 +211,3 @@
 	value = 1
 	var/mood_category ="cloth_eaten"
 	mob_trait = TRAIT_CLOTH_EATER
-
-/datum/quirk/ropebunny
-	name = "Rope Bunny"
-	desc = "You have mastered all forms of bondage! You can create bondage rope out of cloth, and bondage bolas out of bondage rope!"
-	value = 2
-
-/datum/quirk/ropebunny/add()
-	.=..()
-	var/mob/living/carbon/human/H = quirk_holder
-	if (!H)
-		return
-	var/datum/action/ropebunny/conversion/C = new
-	C.Grant(H)
-
-/datum/quirk/ropebunny/remove()
-	var/mob/living/carbon/human/H = quirk_holder
-	var/datum/action/ropebunny/conversion/C = locate() in H.actions
-	C.Remove(H)
-	. = ..()
-
-/datum/quirk/hallowed
-	name = "Hallowed"
-	desc = "You have been blessed by a higher power or are otherwise imbued with holy energy in some way. Your divine presence drives away magic and the unholy! Holy water will restore your health."
-	value = 1 // Maybe up the cost if more is added later.
-	mob_trait = TRAIT_HALLOWED
-	gain_text = span_notice("You feel holy energy starting to flow through your body.")
-	lose_text = span_notice("You feel your holy energy fading away...")
-	medical_record_text = "Patient has unidentified hallowed material concentrated in their blood. Please consult a chaplain."
-
-/datum/quirk/hallowed/add()
-	// Define quirk mob.
-	var/mob/living/carbon/human/quirk_mob = quirk_holder
-
-	// Give the holy trait.
-	ADD_TRAIT(quirk_mob, TRAIT_HOLY, "quirk_hallowed")
-
-	// Give the antimagic trait.
-	ADD_TRAIT(quirk_mob, TRAIT_ANTIMAGIC, "quirk_hallowed")
-
-	// Makes the user holy.
-	quirk_mob.mind.isholy = TRUE
-
-	// Add examine text.
-	RegisterSignal(quirk_holder, COMSIG_PARENT_EXAMINE, .proc/quirk_examine_Hallowed)
-
-/datum/quirk/hallowed/remove()
-	// Define quirk mob.
-	var/mob/living/carbon/human/quirk_mob = quirk_holder
-
-	// Remove the holy trait.
-	REMOVE_TRAIT(quirk_mob, TRAIT_HOLY, "quirk_hallowed")
-
-	// Remove the antimagic trait.
-	REMOVE_TRAIT(quirk_mob, TRAIT_ANTIMAGIC, "quirk_hallowed")
-
-	// Makes the user not holy.
-	quirk_mob.mind.isholy = FALSE
-
-	// Remove examine text
-	UnregisterSignal(quirk_holder, COMSIG_PARENT_EXAMINE)
-
-// Quirk examine text.
-/datum/quirk/hallowed/proc/quirk_examine_Hallowed(atom/examine_target, mob/living/carbon/human/examiner, list/examine_list)
-	examine_list += "[quirk_holder.p_they(TRUE)] radiates divine power..."

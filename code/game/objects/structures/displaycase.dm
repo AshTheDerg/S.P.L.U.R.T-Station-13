@@ -376,9 +376,8 @@
 		I = icon('icons/obj/stationobjs.dmi',"laserbox_broken")
 	if(showpiece)
 		var/icon/S = getFlatIcon(showpiece)
-		if(S)
-			S.Scale(17,17)
-			I.Blend(S,ICON_UNDERLAY,8,12)
+		S.Scale(17,17)
+		I.Blend(S,ICON_UNDERLAY,8,12)
 	src.icon = I
 	return
 

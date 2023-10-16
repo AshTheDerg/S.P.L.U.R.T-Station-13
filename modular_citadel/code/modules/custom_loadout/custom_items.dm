@@ -113,6 +113,7 @@
 	desc = "While a normal carrot would be good for your eyes, this one seems a bit more for hugging then eating."
 	icon = 'icons/obj/hydroponics/harvest.dmi'
 	icon_state = "carrot"
+	item_state = "carrot"
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("slapped")
 	resistance_flags = FLAMMABLE
@@ -145,6 +146,7 @@
 	desc = "A festive plush that squeeks when you squeeze it!"
 	icon = 'icons/obj/custom.dmi'
 	icon_state = "pine_c"
+	item_state = "pine_c"
 	w_class = WEIGHT_CLASS_SMALL
 	attack_verb = list("slapped")
 	resistance_flags = FLAMMABLE
@@ -545,6 +547,7 @@
 /obj/item/toy/plush/mammal/dog/fritz
 	icon = 'icons/obj/custom.dmi'
 	icon_state = "fritz"
+	item_state = "fritz"
 	attack_verb = list("barked", "boofed", "shotgun'd")
 	obj_flags = UNIQUE_RENAME
 	unique_reskin = list(

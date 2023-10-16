@@ -1,4 +1,3 @@
-import { classes } from 'common/react';
 import { createSearch } from 'common/string';
 import { multiline } from 'common/string';
 import { resolveAsset } from '../assets';
@@ -63,18 +62,6 @@ const OrbitedButton = (props, context) => {
       onClick={() => act("orbit", {
         ref: thing.ref,
       })}>
-      {thing.assignment && (
-        <Box inline ml={1}>
-          <Box
-            className={classes([
-              'jobs8x8',
-              thing.assignment,
-            ])}
-            style={{
-              transform: 'scale(1.5) translate(-50%, 0)',
-            }} />
-        </Box>
-      )}
       {thing.name}
       {thing.orbiters && (
         <Box inline ml={1}>

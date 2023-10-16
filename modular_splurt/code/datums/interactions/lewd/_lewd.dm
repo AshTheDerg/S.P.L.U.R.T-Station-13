@@ -14,12 +14,6 @@
 	. = ..()
 	SEND_SIGNAL(src, COMSIG_MOB_LUST_UPDATED)
 
-/mob/living/toggle_anus_always_accessible(accessibility)
-	var/obj/item/organ/genital/anus/donut = getorganslot(ORGAN_SLOT_ANUS)
-	if(donut)
-		return donut.toggle_accessibility(accessibility)
-	. = ..()
-
 /mob/living/moan()
 	var/moaned = lastmoan
 	var/miming = mind ? mind?.miming : FALSE
@@ -245,10 +239,7 @@
 			else
 				H.mob_climax(TRUE, "sex", partner, !cumin, target_gen)
 	set_lust(0)
-
-	SEND_SIGNAL(src, COMSIG_MOB_POST_CAME, target_orifice, partner, cumin, last_genital)
-
-	return TRUE
+	SEND_SIGNAL(src, COMSIG_MOB_CAME, target_orifice, partner)
 
 /mob/living/get_unconsenting(extreme, list/ignored_mobs, var/unholy)
 	for(var/mob/M in range(7, src))

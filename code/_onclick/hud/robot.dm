@@ -302,9 +302,8 @@
 		icon_state = "lamp_off"
 
 /atom/movable/screen/robot/lamp/Destroy()
-	if(robot)
-		robot.lampButton = null
-		robot = null
+	robot.lampButton = null
+	robot = null
 	return ..()
 
 /atom/movable/screen/robot/alerts
@@ -344,9 +343,8 @@
 	var/mob/living/silicon/robot/robot
 
 /atom/movable/screen/robot/modPC/Destroy()
-	if(robot)
-		robot.interfaceButton = null
-		robot = null
+	robot.interfaceButton = null
+	robot = null
 	return ..()
 
 /atom/movable/screen/robot/modPC/Click()

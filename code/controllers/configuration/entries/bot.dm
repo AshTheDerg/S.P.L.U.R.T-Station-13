@@ -5,7 +5,7 @@
 	return ""	//default broadcast
 
 /datum/config_entry/string/chat_announce_new_game
-	default = null
+	config_entry_value = null
 
 /datum/config_entry/string/chat_reboot_role
 

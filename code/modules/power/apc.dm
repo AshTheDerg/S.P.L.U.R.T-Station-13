@@ -290,31 +290,23 @@
 		set_machine_stat(stat | MAINT)
 		update_appearance()
 		addtimer(CALLBACK(src, .proc/update), 5)
-	register_context()
-
-/obj/machinery/power/apc/add_context(atom/source, list/context, obj/item/held_item, mob/living/user)
-	. = ..()
-	if(operating)
-		LAZYSET(context[SCREENTIP_CONTEXT_ALT_LMB], INTENT_ANY, locked ? "Unlock" : "Lock")
-		return CONTEXTUAL_SCREENTIP_SET
 
 /obj/machinery/power/apc/Destroy()
 	GLOB.apcs_list -= src
 
 	if(malfai && operating)
 		malfai.malf_picker.processing_time = clamp(malfai.malf_picker.processing_time - 10,0,1000)
-	if(area)
-		area.power_light = FALSE
-		area.power_equip = FALSE
-		area.power_environ = FALSE
-		area.power_change()
-		area.poweralert(FALSE, src)
+	area.power_light = FALSE
+	area.power_equip = FALSE
+	area.power_environ = FALSE
+	area.power_change()
+	area.poweralert(FALSE, src)
 	if(occupier)
 		malfvacate(1)
-	if(wires)
-		QDEL_NULL(wires)
+	qdel(wires)
+	wires = null
 	if(cell)
-		QDEL_NULL(cell)
+		qdel(cell)
 	if(terminal)
 		disconnect_terminal()
 	. = ..()

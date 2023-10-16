@@ -15,7 +15,7 @@
 
 /datum/config_entry/keyed_list/multiplicative_movespeed/normal
 	name = "multiplicative_movespeed"
-	default = list(			//DEFAULTS
+	config_entry_value = list(			//DEFAULTS
 	/mob/living/simple_animal = 1,
 	/mob/living/silicon/pai = 1,
 	/mob/living/carbon/alien/humanoid/sentinel = 0.25,
@@ -26,7 +26,7 @@
 
 /datum/config_entry/keyed_list/multiplicative_movespeed/floating
 	name = "multiplicative_movespeed_floating"
-	default = list(
+	config_entry_value = list(
 		/mob/living = 0,
 		/mob/living/carbon/alien/humanoid = 0,
 		/mob/living/carbon/alien/humanoid/royal/praetorian = 0,
@@ -62,7 +62,7 @@
 	M.sync()
 
 /datum/config_entry/flag/sprint_enabled
-	default = TRUE
+	config_entry_value = TRUE
 
 /datum/config_entry/flag/sprint_enabled/ValidateAndSet(str_val)
 	. = ..()
@@ -73,31 +73,31 @@
 			L.disable_intentional_sprint_mode()
 
 /datum/config_entry/number/sprintless_stagger_slowdown
-	default = 0
+	config_entry_value = 0
 
 /datum/config_entry/number/sprintless_off_balance_slowdown
-	default = 0.85
+	config_entry_value = 0.85
 
 /datum/config_entry/number/melee_stagger_factor
-	default = 1
+	config_entry_value = 1
 
 /datum/config_entry/number/movedelay/sprint_speed_increase
-	default = 1
+	config_entry_value = 1
 
 /datum/config_entry/number/movedelay/sprint_max_tiles_increase
-	default = 5
+	config_entry_value = 5
 
 /datum/config_entry/number/movedelay/sprint_absolute_max_tiles
-	default = 13
+	config_entry_value = 13
 
 /datum/config_entry/number/movedelay/sprint_buffer_max
-	default = 24
+	config_entry_value = 24
 
 /datum/config_entry/number/movedelay/sprint_stamina_cost
-	default = 1.4
+	config_entry_value = 1.4
 
 /datum/config_entry/number/movedelay/sprint_buffer_regen_per_ds
-	default = 0.4
+	config_entry_value = 0.4
 
 /////////////////////////////////////////////////Outdated move delay
 /datum/config_entry/number/outdated_movedelay

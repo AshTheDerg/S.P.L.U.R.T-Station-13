@@ -3,24 +3,24 @@
 /datum/config_entry/string/banappeals
 
 /datum/config_entry/string/wikiurl
-	default = "https://katlin.dog/citadel-wiki"
+	config_entry_value = "https://katlin.dog/citadel-wiki"
 
 /datum/config_entry/string/wikiurltg
-	default = "http://www.tgstation13.org/wiki"
+	config_entry_value = "http://www.tgstation13.org/wiki"
 
 /datum/config_entry/string/discordurl
-	default = "http://discord.gg"
+	config_entry_value = "http://discord.gg"
 
 /datum/config_entry/string/rulesurl
-	default = "http://www.tgstation13.org/wiki/Rules"
+	config_entry_value = "http://www.tgstation13.org/wiki/Rules"
 
 /datum/config_entry/string/githuburl
-	default = "https://www.github.com/tgstation/-tg-station"
+	config_entry_value = "https://www.github.com/tgstation/-tg-station"
 
 /datum/config_entry/string/roundstatsurl
 
 /datum/config_entry/string/gamelogurl
 
 /datum/config_entry/number/githubrepoid
-	default = null
+	config_entry_value = null
 	min_val = 0

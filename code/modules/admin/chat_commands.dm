@@ -15,8 +15,22 @@
 	var/list/allmins = adm["total"]
 	var/status = "Admins: [allmins.len] (Active: [english_list(adm["present"])] AFK: [english_list(adm["afk"])] Stealth: [english_list(adm["stealth"])] Skipped: [english_list(adm["noflags"])]). "
 	status += "Players: [GLOB.clients.len] (Active: [get_active_player_count(0,1,0)]). Mode: [SSticker.mode ? SSticker.mode.name : "Not started"]."
-	return new /datum/tgs_message_content(status)
+	return status
 
+/datum/tgs_chat_command/irccheck
+	name = "check"
+	help_text = "Gets the playercount, round info, and address of the server"
+	var/last_irc_check = 0
+
+/datum/tgs_chat_command/irccheck/Run(datum/tgs_chat_user/sender, params)
+	var/rtod = REALTIMEOFDAY
+	if(rtod - last_irc_check < IRC_STATUS_THROTTLE)
+		return
+	last_irc_check = rtod
+	var/server = CONFIG_GET(string/server)
+	return "[GLOB.round_id ? "Round #[GLOB.round_id]: " : ""][GLOB.clients.len] players on [SSmapping.config.map_name]; Round [SSticker.HasRoundStarted() ? (SSticker.IsRoundInProgress() ? "Active for [DisplayTimeText(world.time - SSticker.round_start_time, 1)]" : "Finishing") : "Starting"] -- [server ? server : "<byond://[world.internet_address]:[world.port]"]>"
+	//CIT CHANGE obfuscates the gamemode for TGS bot commands on discord by removing Mode:[GLOB.master_mode]
+	//sandstorm change, says how long the round has been on for
 /datum/tgs_chat_command/ahelp
 	name = "ahelp"
 	help_text = "<ckey|ticket #> <message|ticket <close|resolve|icissue|reject|reopen <ticket #>|list>>"
@@ -25,7 +39,7 @@
 /datum/tgs_chat_command/ahelp/Run(datum/tgs_chat_user/sender, params)
 	var/list/all_params = splittext(params, " ")
 	if(all_params.len < 2)
-		return new /datum/tgs_message_content("Insufficient parameters")
+		return "Insufficient parameters"
 	var/target = all_params[1]
 	all_params.Cut(1, 2)
 	var/id = text2num(target)
@@ -34,10 +48,10 @@
 		if(AH)
 			target = AH.initiator_ckey
 		else
-			return new /datum/tgs_message_content("Ticket #[id] not found!")
+			return "Ticket #[id] not found!"
 	var/res = IrcPm(target, all_params.Join(" "), sender.friendly_name)
 	if(res != "Message Successful")
-		return new /datum/tgs_message_content(res)
+		return res
 
 /datum/tgs_chat_command/namecheck
 	name = "namecheck"
@@ -50,7 +64,7 @@
 		return "Insufficient parameters"
 	log_admin("Chat Name Check: [sender.friendly_name] on [params]")
 	message_admins("Name checking [params] from [sender.friendly_name]")
-	return new /datum/tgs_message_content(keywords_lookup(params, 1))
+	return keywords_lookup(params, 1)
 
 /datum/tgs_chat_command/adminwho
 	name = "adminwho"
@@ -58,7 +72,7 @@
 	admin_only = TRUE
 
 /datum/tgs_chat_command/adminwho/Run(datum/tgs_chat_user/sender, params)
-	return new /datum/tgs_message_content(ircadminwho())
+	return ircadminwho()
 
 GLOBAL_LIST(round_end_notifiees)
 
@@ -69,10 +83,10 @@ GLOBAL_LIST(round_end_notifiees)
 
 /datum/tgs_chat_command/notify/Run(datum/tgs_chat_user/sender, params)
 	if(!SSticker.IsRoundInProgress() && SSticker.HasRoundStarted())
-		return new /datum/tgs_message_content("[sender.mention], the round has already ended!")
+		return "[sender.mention], the round has already ended!"
 	LAZYINITLIST(GLOB.round_end_notifiees)
 	GLOB.round_end_notifiees[sender.mention] = TRUE
-	return new /datum/tgs_message_content("I will notify [sender.mention] when the round ends.")
+	return "I will notify [sender.mention] when the round ends."
 
 /datum/tgs_chat_command/sdql
 	name = "sdql"
@@ -81,12 +95,12 @@ GLOBAL_LIST(round_end_notifiees)
 
 /datum/tgs_chat_command/sdql/Run(datum/tgs_chat_user/sender, params)
 	if(GLOB.AdminProcCaller)
-		return new /datum/tgs_message_content("Unable to run query, another admin proc call is in progress. Try again later.")
+		return "Unable to run query, another admin proc call is in progress. Try again later."
 	GLOB.AdminProcCaller = "CHAT_[sender.friendly_name]"	//_ won't show up in ckeys so it'll never match with a real admin
 	var/list/results = world.SDQL2_query(params, GLOB.AdminProcCaller, GLOB.AdminProcCaller)
 	GLOB.AdminProcCaller = null
 	if(!results)
-		return new /datum/tgs_message_content("Query produced no output")
+		return "Query produced no output"
 	var/list/text_res = results.Copy(1, 3)
 	var/list/refs = results.len > 3 ? results.Copy(4) : null
 	if(refs)
@@ -98,7 +112,7 @@ GLOBAL_LIST(round_end_notifiees)
 			else
 				L += "[ref]"
 		refs = L
-	. = new /datum/tgs_message_content("[text_res.Join("\n")][refs ? "\nRefs: [refs.Join(" ")]" : ""]")
+	. = "[text_res.Join("\n")][refs ? "\nRefs: [refs.Join(" ")]" : ""]"
 
 /datum/tgs_chat_command/reload_admins
 	name = "reload_admins"
@@ -108,7 +122,7 @@ GLOBAL_LIST(round_end_notifiees)
 /datum/tgs_chat_command/reload_admins/Run(datum/tgs_chat_user/sender, params)
 	ReloadAsync()
 	log_admin("[sender.friendly_name] reloaded admins via chat command.")
-	return new /datum/tgs_message_content("Admins reloaded.")
+	return "Admins reloaded."
 
 /datum/tgs_chat_command/reload_admins/proc/ReloadAsync()
 	set waitfor = FALSE
@@ -121,14 +135,14 @@ GLOBAL_LIST(round_end_notifiees)
 
 /datum/tgs_chat_command/addbunkerbypass/Run(datum/tgs_chat_user/sender, params)
 	if(!CONFIG_GET(flag/sql_enabled))
-		return new /datum/tgs_message_content("The Database is not enabled!")
+		return "The Database is not enabled!"
 
 	GLOB.bunker_passthrough |= ckey(params)
 	GLOB.bunker_passthrough[ckey(params)] = world.realtime
 	SSpersistence.SavePanicBunker() //we can do this every time, it's okay
 	log_admin("[sender.friendly_name] has added [params] to the current round's bunker bypass list.")
 	message_admins("[sender.friendly_name] has added [params] to the current round's bunker bypass list.")
-	return new /datum/tgs_message_content("[params] has been added to the current round's bunker bypass list.")
+	return "[params] has been added to the current round's bunker bypass list."
 
 // More (silly) chat commands citadel added.
 /datum/tgs_chat_command/wheelofsalt
@@ -145,21 +159,21 @@ GLOBAL_LIST(round_end_notifiees)
 			saltresult += " `\[REDACTED\]` gets some salt this time too"
 	else
 		saltresult += "[saltprimarysubject] [saltsecondarysubject]"
-	return new /datum/tgs_message_content("[saltresult]!")
+	return "[saltresult]!"
 
 /datum/tgs_chat_command/valentine
 	name = "valentine"
 	help_text = "Get a random flirt line."
 
 /datum/tgs_chat_command/valentine/Run(datum/tgs_chat_user/sender, params)
-	return new /datum/tgs_message_content("[pick(GLOB.flirts)]")
+	return "[pick(GLOB.flirts)]"
 
 /datum/tgs_chat_command/despacito
 	name = "despacito"			//someone please high effort this sometime and make it a full on ytdl search
 	help_text = "This is so sad."
 
 /datum/tgs_chat_command/despacito/Run()
-	return new /datum/tgs_message_content("https://www.youtube.com/watch?v=kJQP7kiw5Fk")
+	return "https://www.youtube.com/watch?v=kJQP7kiw5Fk"
 
 /datum/tgs_chat_command/polly
 	name = "polly"
@@ -173,7 +187,7 @@ GLOBAL_LIST(round_end_notifiees)
 	else
 		var/json_file = file("data/npc_saves/Poly.json")
 		if(!fexists(json_file))
-			return new /datum/tgs_message_content("**BAWWWWWK!** LEAVE THE HEADSET! ***BAWKKKKK!!***")
+			return "**BAWWWWWK!** LEAVE THE HEADSET! ***BAWKKKKK!!***"
 		var/list/json = json_decode(file2text(json_file))
 		speech_buffer = json["phrases"]
-		return new /datum/tgs_message_content("[pick(speech_buffer)]")
+		return "[pick(speech_buffer)]"

@@ -314,10 +314,6 @@
 	. = ..()
 	linked_action = new(src)
 
-/obj/item/melee/rune_knife/Destroy()
-	QDEL_NULL(linked_action)
-	. = ..()
-
 /obj/item/melee/rune_knife/pickup(mob/user)
 	. = ..()
 	linked_action.Grant(user, src)

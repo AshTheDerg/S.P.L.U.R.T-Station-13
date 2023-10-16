@@ -1,12 +1,14 @@
-/datum/action/changeling/linglink
+/obj/effect/proc_holder/changeling/linglink
 	name = "Hivemind Link"
-	desc = "We link our victim's mind into the hivemind for personal interrogation."
-	helptext = "If we find a human mad enough to support our cause, this can be a helpful tool to stay in touch."
-	button_icon_state = "hivemind_link"
+	desc = "Link your victim's mind into the hivemind for personal interrogation."
 	chemical_cost = 0
-	req_human = TRUE
+	dna_cost = -1
+	req_human = 1
+	action_icon = 'icons/mob/actions/actions_changeling.dmi'
+	action_icon_state = "ling_link"
+	action_background_icon_state = "bg_ling"
 
-/datum/action/changeling/linglink/can_sting(mob/living/carbon/user)
+/obj/effect/proc_holder/changeling/linglink/can_sting(mob/living/carbon/user)
 	if(!..())
 		return
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
@@ -35,7 +37,7 @@
 		return
 	return changeling.can_absorb_dna(target)
 
-/datum/action/changeling/linglink/sting_action(mob/user)
+/obj/effect/proc_holder/changeling/linglink/sting_action(mob/user)
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/mob/living/carbon/human/target = user.pulling
 	changeling.islinking = 1
@@ -59,7 +61,7 @@
 				target.reagents.add_reagent(/datum/reagent/medicine/salbutamol, 40) // So they don't choke to death while you interrogate them
 				sleep(1800)
 		SSblackbox.record_feedback("nested tally", "changeling_powers", 1, list("[name]", "[i]"))
-		if(!do_mob(user, target, 2 SECONDS))
+		if(!do_mob(user, target, 20))
 			to_chat(user, "<span class='warning'>Our link with [target] has ended!</span>")
 			changeling.islinking = 0
 			target.mind.linglink = 0

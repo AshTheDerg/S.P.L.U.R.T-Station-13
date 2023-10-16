@@ -68,8 +68,8 @@
 
 /mob/living/simple_animal/bot/mulebot/Destroy()
 	unload(0)
-	QDEL_NULL(wires)
-	QDEL_NULL(cell)
+	qdel(wires)
+	wires = null
 	return ..()
 
 /mob/living/simple_animal/bot/mulebot/proc/set_id(new_id)

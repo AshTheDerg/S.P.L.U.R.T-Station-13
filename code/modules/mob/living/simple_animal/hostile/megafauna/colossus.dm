@@ -249,8 +249,6 @@ Difficulty: Very Hard
 	var/list/stored_items = list()
 	var/list/blacklist = list()
 
-GLOBAL_VAR(blackbox_smartfridge)
-
 /obj/machinery/smartfridge/black_box/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_blocker)
@@ -265,10 +263,11 @@ GLOBAL_VAR(blackbox_smartfridge)
 
 /obj/machinery/smartfridge/black_box/Initialize()
 	. = ..()
-	if(GLOB.blackbox_smartfridge && GLOB.blackbox_smartfridge != src)
+	var/static/obj/machinery/smartfridge/black_box/current
+	if(current && current != src)
 		qdel(src, force=TRUE)
 		return
-	GLOB.blackbox_smartfridge = src
+	current = src
 	ReadMemory()
 
 /obj/machinery/smartfridge/black_box/process()
@@ -315,8 +314,6 @@ GLOBAL_VAR(blackbox_smartfridge)
 	if(force)
 		for(var/thing in src)
 			qdel(thing)
-		if(GLOB.blackbox_smartfridge == src)
-			GLOB.blackbox_smartfridge = null
 		return ..()
 	else
 		return QDEL_HINT_LETMELIVE

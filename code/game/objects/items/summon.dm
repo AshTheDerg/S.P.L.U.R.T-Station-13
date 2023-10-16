@@ -34,10 +34,6 @@
 	if(host_type)
 		host = new host_type(src, summon_count, range)
 
-/obj/item/summon/Destroy()
-	QDEL_NULL(host)
-	return ..()
-
 /obj/item/summon/afterattack(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()
 	if(!host)
@@ -333,9 +329,7 @@
 		if(del_no_host)
 			qdel(src)
 			return
-		if(animation_timerid)
-			deltimer(animation_timerid)
-		atom.transform = null
+		HardReset(null)
 		atom.moveToNullspace()
 		return
 	if(immediate)

@@ -17,10 +17,6 @@
 /obj/structure/lattice,
 /turf/template_noop,
 /area/space/nearstation)
-"A" = (
-/obj/machinery/spaceship_navigation_beacon/invion,
-/turf/closed/wall,
-/area/ruin/unpowered/no_grav)
 
 (1,1,1) = {"
 a
@@ -934,7 +930,7 @@ b
 b
 b
 c
-A
+c
 c
 c
 b

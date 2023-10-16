@@ -87,10 +87,6 @@
 /obj/item/organ/alien/plasmavessel/small,
 /turf/open/floor/plating/airless,
 /area/ruin/unpowered)
-"O" = (
-/obj/machinery/spaceship_navigation_beacon/invion,
-/turf/closed/wall,
-/area/ruin/unpowered)
 
 (1,1,1) = {"
 a
@@ -877,7 +873,7 @@ c
 c
 f
 n
-O
+c
 c
 c
 q

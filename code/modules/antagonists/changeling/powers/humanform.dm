@@ -1,12 +1,14 @@
-/datum/action/changeling/humanform
+/obj/effect/proc_holder/changeling/humanform
 	name = "Human Form"
-	desc = "We change into a human. Costs 5 chemicals."
-	button_icon_state = "human_form"
+	desc = "We change into a human."
 	chemical_cost = 5
 	req_dna = 1
+	action_icon = 'icons/mob/actions/actions_changeling.dmi'
+	action_icon_state = "ling_human"
+	action_background_icon_state = "bg_ling"
 
 //Transform into a human.
-/datum/action/changeling/humanform/sting_action(mob/living/carbon/user)
+/obj/effect/proc_holder/changeling/humanform/sting_action(mob/living/carbon/user)
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 
 	var/datum/changelingprofile/chosen_prof = changeling.select_dna()

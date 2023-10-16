@@ -134,15 +134,6 @@ GLOBAL_LIST_EMPTY(deletion_failures)
 	DoSearchVar(GLOB, "GLOB") //globals
 	log_reftracker("Finished searching globals")
 
-	//Yes we do actually need to do this. The searcher refuses to read weird lists
-	//And global.vars is a really weird list
-	var/global_vars = list()
-	for(var/key in global.vars)
-		global_vars[key] = global.vars[key]
-
-	DoSearchVar(global_vars, "Native Global", search_time = starting_time)
-	log_reftracker("Finished searching native globals")
-
 	for(var/datum/thing in world) //atoms (don't beleive its lies)
 		DoSearchVar(thing, "World -> [thing.type]", search_time = starting_time)
 	log_reftracker("Finished searching atoms")
@@ -152,11 +143,9 @@ GLOBAL_LIST_EMPTY(deletion_failures)
 	log_reftracker("Finished searching datums")
 
 	//Warning, attempting to search clients like this will cause crashes if done on live. Watch yourself
-#ifndef REFERENCE_DOING_IT_LIVE
 	for(var/client/thing) //clients
 		DoSearchVar(thing, "Clients -> [thing.type]", search_time = starting_time)
 	log_reftracker("Finished searching clients")
-#endif
 
 	log_reftracker("Completed search for references to a [type].")
 
@@ -170,7 +159,7 @@ GLOBAL_LIST_EMPTY(deletion_failures)
 
 /datum/proc/DoSearchVar(potential_container, container_name, recursive_limit = 64, search_time = world.time)
 	#ifdef REFERENCE_TRACKING_DEBUG
-	if(SSgarbage.should_save_refs && !found_refs)
+	if(!found_refs && SSgarbage.should_save_refs)
 		found_refs = list()
 	#endif
 

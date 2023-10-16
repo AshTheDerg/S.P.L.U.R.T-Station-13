@@ -1,11 +1,14 @@
-/datum/action/changeling/absorbDNA
+/obj/effect/proc_holder/changeling/absorbDNA
 	name = "Absorb DNA"
-	desc = "Absorb the DNA of our victim. Requires us to strangle them."
-	button_icon_state = "absorb_dna"
+	desc = "Absorb the DNA of our victim."
+	chemical_cost = 0
 	dna_cost = 0
-	req_human = TRUE
+	req_human = 1
+	action_icon = 'icons/mob/actions/actions_changeling.dmi'
+	action_icon_state = "ling_absorb_dna"
+	action_background_icon_state = "bg_ling"
 
-/datum/action/changeling/absorbDNA/can_sting(mob/living/carbon/user)
+/obj/effect/proc_holder/changeling/absorbDNA/can_sting(mob/living/carbon/user)
 	if(!..())
 		return
 
@@ -26,7 +29,7 @@
 
 
 
-/datum/action/changeling/absorbDNA/sting_action(mob/user)
+/obj/effect/proc_holder/changeling/absorbDNA/sting_action(mob/user)
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	var/mob/living/carbon/human/target = user.pulling
 	changeling.isabsorbing = 1
@@ -99,7 +102,7 @@
 			changeling.geneticpoints += round(target_ling.geneticpoints/2)
 			changeling.maxgeneticpoints += round(target_ling.geneticpoints/2)
 			target_ling.geneticpoints = 0
-			target_ling.can_respec = 0
+			target_ling.canrespec = 0
 			changeling.chem_storage += round(target_ling.chem_storage/2)
 			changeling.chem_charges += min(target_ling.chem_charges, changeling.chem_storage)
 			target_ling.chem_charges = 0
@@ -113,7 +116,7 @@
 	changeling.chem_charges=min(changeling.chem_charges+10, changeling.chem_storage)
 
 	changeling.isabsorbing = 0
-	changeling.can_respec = 1
+	changeling.canrespec = 1
 
 	target.death(0)
 	target.Drain()

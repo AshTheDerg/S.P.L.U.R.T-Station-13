@@ -12,4 +12,4 @@
 	for(var/stackpath in paths)
 		var/obj/item/stack/stack = new stackpath
 		if(!stack.merge_type)
-			TEST_FAIL("([stack]) lacks set merge_type variable!")
+			Fail("([stack]) lacks set merge_type variable!")

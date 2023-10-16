@@ -313,10 +313,6 @@
 	if(istype(loc, /obj/item/clothing/suit/space/hardsuit/syndi))
 		linkedsuit = loc
 
-/obj/item/clothing/head/helmet/space/hardsuit/syndi/Destroy()
-	linkedsuit = null
-	return ..()
-
 /obj/item/clothing/head/helmet/space/hardsuit/syndi/attack_self(mob/user) //Toggle Helmet
 	if(!isturf(user.loc))
 		to_chat(user, "<span class='warning'>You cannot toggle your helmet while in this [user.loc]!</span>" )
@@ -530,10 +526,6 @@
 	. = ..()
 	bomb_radar = new /obj/machinery/doppler_array/integrated(src)
 
-/obj/item/clothing/head/helmet/space/hardsuit/rd/Destroy()
-	QDEL_NULL(bomb_radar)
-	return ..()
-
 /obj/item/clothing/head/helmet/space/hardsuit/rd/equipped(mob/living/carbon/human/user, slot)
 	..()
 	if (slot == ITEM_SLOT_HEAD)
@@ -707,10 +699,6 @@
 /obj/item/clothing/head/helmet/space/hardsuit/ancient/mason/Initialize(mapload)
 	. = ..()
 	bomb_radar = new /obj/machinery/doppler_array/integrated(src)
-
-/obj/item/clothing/head/helmet/space/hardsuit/ancient/mason/Destroy()
-	QDEL_NULL(bomb_radar)
-	return ..()
 
 /obj/item/clothing/head/helmet/space/hardsuit/ancient/mason/equipped(mob/living/carbon/human/user, slot)
 	..()
@@ -977,7 +965,7 @@
 	var/energy_color = "#35FFF0"
 
 /obj/item/clothing/suit/space/hardsuit/lavaknight/Initialize(mapload)
-	. = ..()
+	..()
 	light_color = energy_color
 	set_light(1)
 	update_icon()

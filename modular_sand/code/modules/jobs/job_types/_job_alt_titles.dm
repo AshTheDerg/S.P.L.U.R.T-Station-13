@@ -21,8 +21,7 @@
 	alt_titles = list(
 		"Chief of Security",
 		"Sheriff",
-		"Praetor",
-		"Tarkhan" //If this reference is an issue I will remove it
+		"Praetor"
 		)
 
 /datum/job/qm
@@ -128,8 +127,7 @@
 		"Biomechanical Engineer",
 		"Mechatronic Engineer",
 		"Mechanic",
-		"Robotics Operator",
-		"MODsuit Engineer"
+		"Robotics Operator"
 		)
 
 /datum/job/scientist
@@ -151,21 +149,17 @@
 	alt_titles = list(
 		"Nurse",
 		"Surgeon",
-		"Medical Secretary",
-		"Emergency Physician",
-		"Field Surgeon" 
+		"Medical Secretary"
 		)
 
 /datum/job/geneticist
 	alt_titles = list(
-		"Genetic Therapist",
-		"Bioengineer"
+		"Genetic Therapist"
 		)
 
 /datum/job/paramedic
 	alt_titles = list(
-		"Emergency Medical Technician",
-		"Advanced Emergency Medical Technician"
+		"Emergency Medical Technician"
 		)
 
 /datum/job/virologist

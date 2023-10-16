@@ -1,14 +1,17 @@
-/datum/action/changeling/mimicvoice
+/obj/effect/proc_holder/changeling/mimicvoice
 	name = "Mimic Voice"
-	desc = "We shape our vocal glands to sound like a desired voice. Maintaining this power slows chemical production."
-	button_icon_state = "mimic_voice"
+	desc = "We shape our vocal glands to sound like a desired voice."
 	helptext = "Will turn your voice into the name that you enter. We must constantly expend chemicals to maintain our form like this."
 	chemical_cost = 0 //constant chemical drain hardcoded
 	dna_cost = 1
-	req_human = TRUE
+	req_human = 1
+	action_icon = 'icons/mob/actions/actions_changeling.dmi'
+	action_icon_state = "ling_mimic_voice"
+	action_background_icon_state = "bg_ling"
+
 
 // Fake Voice
-/datum/action/changeling/mimicvoice/sting_action(mob/user)
+/obj/effect/proc_holder/changeling/mimicvoice/sting_action(mob/user)
 	var/datum/antagonist/changeling/changeling = user.mind.has_antag_datum(/datum/antagonist/changeling)
 	if(changeling.mimicing)
 		changeling.mimicing = ""

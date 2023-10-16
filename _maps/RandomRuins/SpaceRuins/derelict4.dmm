@@ -89,10 +89,6 @@
 /obj/structure/girder,
 /turf/open/floor/plating/airless,
 /area/ruin/unpowered)
-"S" = (
-/obj/machinery/spaceship_navigation_beacon/invion,
-/turf/closed/mineral,
-/area/ruin/unpowered)
 
 (1,1,1) = {"
 a
@@ -521,7 +517,7 @@ b
 b
 b
 b
-S
+b
 b
 b
 d

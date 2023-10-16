@@ -357,10 +357,9 @@
 /obj/item/melee/blood_magic/Initialize(mapload, spell)
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, CULT_TRAIT)
-	if(spell)
-		source = spell
-		uses = source.charges
-		health_cost = source.health_cost
+	source = spell
+	uses = source.charges
+	health_cost = source.health_cost
 
 
 /obj/item/melee/blood_magic/Destroy()
@@ -375,7 +374,7 @@
 			source.desc = source.base_desc
 			source.desc += "<br><b><u>Has [uses] use\s remaining</u></b>."
 			source.UpdateButtonIcon()
-	return ..()
+	..()
 
 /obj/item/melee/blood_magic/attack_self(mob/living/user)
 	afterattack(user, user, TRUE)

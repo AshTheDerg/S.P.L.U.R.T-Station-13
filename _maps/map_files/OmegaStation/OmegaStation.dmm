@@ -796,7 +796,6 @@
 /obj/structure/cable/white{
 	icon_state = "4-8"
 	},
-/obj/effect/landmark/start/bridgeofficer,
 /turf/open/floor/plasteel/dark,
 /area/command/bridge)
 "abE" = (
@@ -1765,7 +1764,6 @@
 /obj/machinery/camera{
 	c_tag = "Prison - VR Sleepers"
 	},
-/obj/effect/landmark/start/prisoner,
 /turf/open/floor/plasteel,
 /area/security/prison)
 "adx" = (
@@ -1935,7 +1933,6 @@
 	name = "Station Intercom";
 	pixel_x = 28
 	},
-/obj/machinery/vending/wardrobe/blueshield_wardrobe,
 /turf/open/floor/plasteel/dark/side{
 	dir = 5
 	},
@@ -2295,7 +2292,6 @@
 /obj/machinery/light{
 	dir = 4
 	},
-/obj/machinery/vending/wardrobe/bridgeofficer_wardrobe,
 /turf/open/floor/plasteel/dark/side{
 	dir = 5
 	},
@@ -2757,7 +2753,6 @@
 	dir = 8;
 	name = "command camera"
 	},
-/obj/structure/closet/secure_closet/blueshield,
 /turf/open/floor/plasteel/dark/side{
 	dir = 5
 	},
@@ -2985,9 +2980,9 @@
 /turf/open/floor/plasteel,
 /area/cargo/storage)
 "afH" = (
-/obj/machinery/suit_storage_unit/security,
-/obj/effect/turf_decal/stripes/end,
-/turf/open/floor/plasteel/dark,
+/turf/open/floor/plating{
+	icon_state = "panelscorched"
+	},
 /area/maintenance/port/fore)
 "afI" = (
 /obj/machinery/button/door{
@@ -3096,26 +3091,13 @@
 /turf/open/floor/wood,
 /area/command/heads_quarters/hos)
 "afT" = (
-/obj/machinery/suit_storage_unit/security,
-/obj/effect/turf_decal/stripes/end,
-/turf/open/floor/plasteel/dark,
+/obj/machinery/door/airlock/maintenance_hatch{
+	name = "Security Maintenance";
+	req_access_txt = "63"
+	},
+/turf/open/floor/plasteel,
 /area/security/brig)
 "afU" = (
-/obj/structure/closet{
-	name = "Evidence Closet"
-	},
-/obj/item/poster/random_contraband{
-	pixel_x = 3;
-	pixel_y = 3
-	},
-/obj/item/poster/random_contraband{
-	pixel_x = -3;
-	pixel_y = -3
-	},
-/obj/item/poster/random_contraband,
-/obj/structure/sign/nanotrasen{
-	pixel_y = 32
-	},
 /turf/open/floor/plasteel/dark,
 /area/security/brig)
 "afV" = (
@@ -3217,7 +3199,6 @@
 /obj/machinery/atmospherics/pipe/manifold/scrubbers/hidden{
 	dir = 4
 	},
-/obj/structure/closet/secure_closet/bridgesec,
 /turf/open/floor/plasteel/dark/side{
 	dir = 5
 	},
@@ -3970,7 +3951,6 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden{
 	dir = 6
 	},
-/obj/structure/closet/secure_closet/brigdoc,
 /turf/open/floor/plasteel/dark,
 /area/security/brig)
 "ahA" = (
@@ -3989,6 +3969,24 @@
 /turf/open/floor/plating,
 /area/asteroid/nearstation)
 "ahC" = (
+/obj/structure/sign/nanotrasen{
+	pixel_x = -32
+	},
+/obj/machinery/light{
+	dir = 8
+	},
+/obj/structure/closet{
+	name = "Evidence Closet"
+	},
+/obj/item/poster/random_contraband{
+	pixel_x = 3;
+	pixel_y = 3
+	},
+/obj/item/poster/random_contraband{
+	pixel_x = -3;
+	pixel_y = -3
+	},
+/obj/item/poster/random_contraband,
 /turf/open/floor/plasteel/dark,
 /area/security/brig)
 "ahD" = (
@@ -4409,7 +4407,7 @@
 	},
 /obj/machinery/atmospherics/pipe/simple/supply/hidden,
 /obj/machinery/door/airlock/security/glass{
-	name = "Security Storage";
+	name = "Security E.V.A. Storage";
 	req_access_txt = "63"
 	},
 /turf/open/floor/plasteel,
@@ -4434,17 +4432,15 @@
 /turf/open/floor/plating,
 /area/security/brig)
 "aiu" = (
+/obj/machinery/suit_storage_unit/security,
 /obj/structure/extinguisher_cabinet{
 	pixel_x = -26
 	},
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 4
 	},
-/obj/machinery/light{
-	dir = 8
-	},
-/obj/structure/closet{
-	name = "Evidence Closet"
+/obj/effect/turf_decal/stripes/end{
+	dir = 4
 	},
 /turf/open/floor/plasteel/checker,
 /area/security/brig)
@@ -4715,6 +4711,7 @@
 /turf/open/floor/plasteel,
 /area/hallway/primary/port/aft)
 "aiR" = (
+/obj/machinery/suit_storage_unit/security,
 /obj/machinery/firealarm{
 	dir = 8;
 	pixel_x = 24
@@ -4722,9 +4719,9 @@
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on{
 	dir = 8
 	},
-/obj/structure/bed,
-/obj/item/bedsheet/medical,
-/obj/machinery/iv_drip,
+/obj/effect/turf_decal/stripes/end{
+	dir = 8
+	},
 /turf/open/floor/plasteel/checker,
 /area/security/brig)
 "aiS" = (
@@ -4769,7 +4766,6 @@
 "aiW" = (
 /obj/machinery/atmospherics/pipe/simple/supply/hidden,
 /obj/effect/turf_decal/tile/red,
-/obj/effect/landmark/start/depsec/medical,
 /turf/open/floor/plasteel,
 /area/security/brig)
 "aiX" = (
@@ -4814,8 +4810,9 @@
 /obj/machinery/status_display/ai{
 	pixel_x = 32
 	},
-/obj/structure/table/optable,
-/obj/item/storage/backpack/duffelbag/sec/surgery,
+/obj/structure/closet{
+	name = "Evidence Closet"
+	},
 /turf/open/floor/plasteel/dark,
 /area/security/brig)
 "ajb" = (
@@ -5983,7 +5980,6 @@
 	icon_state = "4-8"
 	},
 /obj/effect/turf_decal/tile/red,
-/obj/effect/landmark/start/depsec/supply,
 /turf/open/floor/plasteel,
 /area/security/brig)
 "akY" = (
@@ -6009,7 +6005,6 @@
 /obj/machinery/status_display{
 	pixel_x = 32
 	},
-/obj/effect/landmark/start/depsec/engineering,
 /turf/open/floor/plasteel,
 /area/security/brig)
 "ala" = (
@@ -7316,7 +7311,6 @@
 	pixel_x = 32
 	},
 /obj/effect/turf_decal/tile/red,
-/obj/effect/landmark/start/depsec/science,
 /turf/open/floor/plasteel,
 /area/security/brig)
 "anG" = (
@@ -8446,6 +8440,7 @@
 /turf/open/floor/plasteel,
 /area/security/brig)
 "apy" = (
+/obj/machinery/vending/security,
 /obj/machinery/airalarm/unlocked{
 	dir = 4;
 	pixel_x = -23
@@ -8460,7 +8455,6 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 4
 	},
-/obj/structure/closet/l3closet/security,
 /turf/open/floor/plasteel/dark,
 /area/security/brig)
 "apz" = (
@@ -9598,7 +9592,7 @@
 /obj/machinery/atmospherics/components/unary/vent_pump/on{
 	dir = 1
 	},
-/obj/machinery/vending/security,
+/obj/structure/closet/l3closet/security,
 /turf/open/floor/plasteel/dark/side{
 	dir = 8
 	},
@@ -13108,7 +13102,7 @@
 	icon_state = "1-2"
 	},
 /obj/machinery/door/airlock/security/glass{
-	name = "Security Storage";
+	name = "Security E.V.A. Storage";
 	req_access_txt = "63"
 	},
 /turf/open/floor/plasteel,
@@ -14728,7 +14722,6 @@
 /obj/machinery/atmospherics/pipe/simple/supply/hidden{
 	dir = 4
 	},
-/obj/machinery/computer/operating,
 /turf/open/floor/plasteel/dark,
 /area/security/brig)
 "aBr" = (
@@ -14783,7 +14776,6 @@
 	icon_state = "1-2"
 	},
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden,
-/obj/effect/landmark/start/brigdoc,
 /turf/open/floor/plasteel/dark,
 /area/security/brig)
 "aBy" = (
@@ -28508,7 +28500,6 @@
 "bbt" = (
 /obj/machinery/atmospherics/pipe/simple/supply/hidden,
 /obj/effect/turf_decal/tile/blue,
-/obj/effect/landmark/start/psychologist,
 /turf/open/floor/plasteel/white,
 /area/medical/medbay/zone3)
 "bbu" = (
@@ -35577,7 +35568,6 @@
 /turf/closed/wall,
 /area/science/mixing)
 "ggq" = (
-/obj/effect/landmark/start/blueshield,
 /turf/open/floor/plasteel/dark/side{
 	dir = 10
 	},
@@ -36718,12 +36708,6 @@
 	},
 /turf/closed/wall/r_wall,
 /area/science/mixing)
-"jUV" = (
-/obj/effect/landmark/start/stowaway,
-/turf/open/floor/plating{
-	icon_state = "platingdmg3"
-	},
-/area/maintenance/port/fore)
 "jXc" = (
 /obj/machinery/door/airlock/external{
 	name = "External Airlock";
@@ -37634,10 +37618,7 @@
 /turf/open/floor/plating,
 /area/science/mixing)
 "ohb" = (
-/obj/machinery/door/airlock/maintenance_hatch{
-	name = "Security Maintenance";
-	req_access_txt = "63"
-	},
+/obj/effect/landmark/start/stowaway,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "ohM" = (
@@ -38359,7 +38340,6 @@
 	},
 /area/maintenance/starboard/aft)
 "qSs" = (
-/obj/effect/landmark/start/bridgeofficer,
 /turf/open/floor/plasteel/dark/side{
 	dir = 6
 	},
@@ -41011,10 +40991,6 @@
 	icon_state = "wood-broken6"
 	},
 /area/maintenance/starboard/aft)
-"tBv" = (
-/obj/effect/landmark/start/prisoner,
-/turf/open/floor/plasteel,
-/area/security/prison)
 "tFk" = (
 /obj/machinery/atmospherics/components/unary/vent_scrubber/on{
 	dir = 4
@@ -41990,12 +41966,6 @@
 /obj/machinery/atmospherics/pipe/simple/general/visible,
 /turf/open/floor/plasteel,
 /area/engineering/atmos)
-"xhi" = (
-/obj/effect/turf_decal/caution{
-	dir = 4
-	},
-/turf/open/floor/plasteel/dark,
-/area/maintenance/port/fore)
 "xiZ" = (
 /obj/machinery/atmospherics/components/unary/portables_connector/visible,
 /obj/machinery/light{
@@ -75148,7 +75118,7 @@ acH
 acH
 acH
 acH
-jUV
+aDm
 agF
 agF
 agF
@@ -76176,7 +76146,7 @@ azo
 aAo
 acH
 afH
-xhi
+ars
 agF
 aio
 aiT
@@ -76433,7 +76403,7 @@ acH
 aAw
 acH
 afT
-ahC
+agF
 agF
 aip
 aiU
@@ -76682,7 +76652,7 @@ aad
 aad
 acH
 adw
-tBv
+aep
 azn
 aep
 ajb

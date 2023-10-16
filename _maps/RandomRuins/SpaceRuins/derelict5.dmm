@@ -72,10 +72,6 @@
 /obj/machinery/door/airlock/external,
 /turf/open/floor/plating,
 /area/ruin/unpowered)
-"V" = (
-/obj/machinery/spaceship_navigation_beacon/invion,
-/turf/closed/wall,
-/area/ruin/unpowered)
 
 (1,1,1) = {"
 a
@@ -773,7 +769,7 @@ j
 f
 f
 e
-V
+e
 p
 l
 e

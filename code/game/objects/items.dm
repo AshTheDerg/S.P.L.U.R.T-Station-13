@@ -209,7 +209,6 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 			LAZYADD(used_skills[path], S.skill_traits)
 
 /obj/item/Destroy()
-	master = null
 	item_flags &= ~DROPDEL	//prevent reqdels
 	if(ismob(loc))
 		var/mob/m = loc
@@ -589,14 +588,17 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 	set category = "Object"
 	set name = "Pick up"
 
+	if(usr.incapacitated() || !Adjacent(usr) || usr.lying)
+		return
+
 	if(iscyborg(usr))
 		var/obj/item/gripper/gripper = usr.get_active_held_item(TRUE)
-		if(istype(gripper) && !gripper.wrapped)
-			usr.ClickOn(src)
+		if(istype(gripper))
+			gripper.pre_attack(src, usr, get_dist(src, usr))
 		return
 
 	if(usr.get_active_held_item() == null) // Let me know if this has any problems -Yota
-		usr.ClickOn(src)
+		usr.UnarmedAttack(src)
 
 //This proc is executed when someone clicks the on-screen UI button.
 //The default action is attack_self().

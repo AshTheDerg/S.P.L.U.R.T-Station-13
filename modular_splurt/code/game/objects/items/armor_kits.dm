@@ -42,7 +42,6 @@
 		used = TRUE
 
 	if(used)
-		C.allowed = GLOB.security_vest_allowed
 		user.visible_message("<span class = 'notice'>[user] reinforces [C] with [src].</span>", \
 		"<span class = 'notice'>You reinforce [C] with [src], making it as protective as a blueshield armored vest.</span>")
 		C.name = "aegis [C.name]"
@@ -145,7 +144,6 @@
 		used = TRUE
 
 	if(used)
-		C.allowed = GLOB.security_vest_allowed
 		user.visible_message("<span class = 'notice'>[user] reinforces [C] with [src].</span>", \
 		"<span class = 'notice'>You reinforce [C] with [src], making it as protective as a security armored vest.</span>")
 		C.name = "rampart [C.name]"

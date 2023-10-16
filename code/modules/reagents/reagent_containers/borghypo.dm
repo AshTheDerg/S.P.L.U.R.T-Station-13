@@ -43,7 +43,6 @@ Borg Hypospray
 	START_PROCESSING(SSobj, src)
 
 /obj/item/reagent_containers/borghypo/Destroy()
-	QDEL_LIST(reagent_list)
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 

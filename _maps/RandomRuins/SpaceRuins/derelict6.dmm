@@ -516,10 +516,6 @@
 	},
 /turf/template_noop,
 /area/ruin/unpowered)
-"BF" = (
-/obj/machinery/spaceship_navigation_beacon/invion,
-/turf/closed/wall,
-/area/ruin/unpowered)
 
 (1,1,1) = {"
 aa
@@ -807,7 +803,7 @@ ag
 ag
 ag
 ag
-BF
+ai
 ai
 aS
 aW

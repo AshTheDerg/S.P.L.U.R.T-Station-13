@@ -16,7 +16,7 @@
 		battery = new battery_type(src)
 
 /obj/item/computer_hardware/battery/Destroy()
-	QDEL_NULL(battery)
+	battery = null
 	return ..()
 
 ///What happens when the battery is removed (or deleted) from the module, through try_eject() or not.
@@ -59,7 +59,7 @@
 			user.put_in_hands(battery)
 			to_chat(user, span_notice("You detach \the [battery] from \the [src]."))
 		else
-			battery.forceMove(get_turf(src))
+			battery.forceMove(drop_location())
 		return TRUE
 
 /obj/item/stock_parts/cell/computer

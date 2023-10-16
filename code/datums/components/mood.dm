@@ -43,7 +43,6 @@
 		hud.show_hud(hud.hud_version)
 
 /datum/component/mood/Destroy()
-	QDEL_LIST_ASSOC_VAL(mood_events)
 	STOP_PROCESSING(SSobj, src)
 	unmodify_hud()
 	return ..()

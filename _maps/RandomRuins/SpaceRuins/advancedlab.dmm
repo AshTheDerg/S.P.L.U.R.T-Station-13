@@ -279,10 +279,6 @@
 	},
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/powered/advancedlab)
-"W" = (
-/obj/machinery/spaceship_navigation_beacon/invion,
-/turf/closed/wall,
-/area/ruin/space/has_grav/powered/advancedlab)
 
 (1,1,1) = {"
 a
@@ -452,7 +448,7 @@ f
 f
 f
 f
-W
+b
 b
 b
 b

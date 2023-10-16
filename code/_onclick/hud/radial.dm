@@ -9,17 +9,6 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	plane = ABOVE_HUD_PLANE
 	var/datum/radial_menu/parent
 
-/atom/movable/screen/radial/proc/set_parent(new_value)
-	if(parent)
-		UnregisterSignal(parent, COMSIG_PARENT_QDELETING)
-	parent = new_value
-	if(parent)
-		RegisterSignal(parent, COMSIG_PARENT_QDELETING, .proc/handle_parent_del)
-
-/atom/movable/screen/radial/proc/handle_parent_del()
-	SIGNAL_HANDLER
-	set_parent(null)
-
 /atom/movable/screen/radial/slice
 	icon_state = "radial_slice"
 	var/choice
@@ -135,7 +124,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		for(var/i in 1 to elements_to_add) //Create all elements
 			var/atom/movable/screen/radial/slice/new_element = new /atom/movable/screen/radial/slice
 			new_element.tooltips = use_tooltips
-			new_element.set_parent(src)
+			new_element.parent = src
 			elements += new_element
 
 	var/page = 1
@@ -221,7 +210,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 
 /datum/radial_menu/New()
 	close_button = new
-	close_button.set_parent(src)
+	close_button.parent = src
 
 /datum/radial_menu/proc/Reset()
 	choices.Cut()
@@ -272,7 +261,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	//Blank
 	menu_holder = image(icon='icons/effects/effects.dmi',loc=anchor,icon_state="nothing",layer = ABOVE_HUD_LAYER)
 	menu_holder.plane = ABOVE_HUD_PLANE
-	menu_holder.appearance_flags |= KEEP_APART|NO_CLIENT_COLOR|RESET_ALPHA|RESET_COLOR|RESET_TRANSFORM
+	menu_holder.appearance_flags |= KEEP_APART
 	menu_holder.vis_contents += elements + close_button
 	current_user.images += menu_holder
 

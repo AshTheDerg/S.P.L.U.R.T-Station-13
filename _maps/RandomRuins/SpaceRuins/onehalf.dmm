@@ -1209,10 +1209,6 @@
 	},
 /turf/template_noop,
 /area/template_noop)
-"Cu" = (
-/obj/machinery/spaceship_navigation_beacon/invion,
-/turf/closed/wall,
-/area/ruin/space/has_grav/onehalf/drone_bay)
 "Ky" = (
 /turf/template_noop,
 /area/space/nearstation)
@@ -1778,7 +1774,7 @@ aa
 aa
 ar
 ar
-Cu
+ar
 bs
 bH
 ar

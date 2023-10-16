@@ -13,16 +13,12 @@
 	interaction_flags_machine = NONE
 	light_range = 4
 	layer = ABOVE_OBJ_LAYER
-	var/obj/machinery/field/generator/field_gen_1 = null
-	var/obj/machinery/field/generator/field_gen_2 = null
+	var/obj/machinery/field/generator/FG1 = null
+	var/obj/machinery/field/generator/FG2 = null
 
 /obj/machinery/field/containment/Destroy()
-	if(field_gen_1)
-		field_gen_1.fields -= src
-		field_gen_1 = null
-	if(field_gen_2)
-		field_gen_2.fields -= src
-		field_gen_2 = null
+	FG1.fields -= src
+	FG2.fields -= src
 	return ..()
 
 /obj/machinery/field/containment/on_attack_hand(mob/user, act_intent = user.a_intent, unarmed_attack_flags)
@@ -50,12 +46,12 @@
 	return FALSE
 
 /obj/machinery/field/containment/attack_animal(mob/living/simple_animal/M)
-	if(!field_gen_1 || !field_gen_2)
+	if(!FG1 || !FG2)
 		qdel(src)
 		return
 	if(ismegafauna(M))
 		M.visible_message("<span class='warning'>[M] glows fiercely as the containment field flickers out!</span>")
-		field_gen_1.calc_power(INFINITY) //rip that 'containment' field
+		FG1.calc_power(INFINITY) //rip that 'containment' field
 		M.adjustHealth(-M.obj_damage)
 	else
 		..()
@@ -72,12 +68,12 @@
 /obj/machinery/field/containment/proc/set_master(master1,master2)
 	if(!master1 || !master2)
 		return FALSE
-	field_gen_1 = master1
-	field_gen_2 = master2
+	FG1 = master1
+	FG2 = master2
 	return TRUE
 
 /obj/machinery/field/containment/shock(mob/living/user)
-	if(!field_gen_1 || !field_gen_2)
+	if(!FG1 || !FG2)
 		qdel(src)
 		return FALSE
 	..()
