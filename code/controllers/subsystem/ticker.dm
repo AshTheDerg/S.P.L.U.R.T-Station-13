@@ -278,7 +278,7 @@ SUBSYSTEM_DEF(ticker)
 		var/list/modes = new
 		for (var/datum/game_mode/M in runnable_modes)
 			modes += M.name
-		modes = sortList(modes)
+		modes = sort_list(modes)
 		to_chat(world, "<b>The gamemode is: secret!\nPossibilities:</B> [english_list(modes)]")
 	else
 		mode.announce()*/
@@ -415,7 +415,7 @@ SUBSYSTEM_DEF(ticker)
 				SSjob.EquipRank(N, player.mind.assigned_role, 0)
 				if(CONFIG_GET(flag/roundstart_traits) && ishuman(N.new_character))
 					SSquirks.AssignQuirks(N.new_character, N.client, TRUE, TRUE, SSjob.GetJob(player.mind.assigned_role), FALSE, N)
-				//skyrat change
+				//sandstorm change
 				if(ishuman(N.new_character))
 					SSlanguage.AssignLanguage(N.new_character, N.client)
 				//
